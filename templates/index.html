@@ -35,9 +35,9 @@
         <div class="col-lg-6 d-flex flex-column" style="height: 480px;">
 
           <!-- Upload -->
-          <div class="card p-3 mb-3 flex-grow-1 position-relative">
+          <div class="card p-3 mb-3 flex-grow-1">
             <h6>📤 Upload Image</h6>
-            <input type="file" id="image-input" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
+            <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
           </div>
 
           <!-- Tools -->
@@ -107,20 +107,19 @@
       }
     }
 
-    function removeImage() {
-      document.getElementById('image-input').value = '';
-      const img = document.getElementById('preview-img');
-      img.src = '#';
-      img.style.display = 'none';
-      document.getElementById('image-box').style.display = 'none';
-    }
-
     function showSection(sectionId) {
       ['prediction'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('d-none');
       });
       document.getElementById(sectionId).classList.remove('d-none');
+    }
+
+    function removeImage() {
+      document.getElementById('preview-img').src = '#';
+      document.getElementById('image-box').style.display = 'none';
+      const fileInput = document.querySelector('input[name="image"]');
+      fileInput.value = '';
     }
   </script>
 </body>
