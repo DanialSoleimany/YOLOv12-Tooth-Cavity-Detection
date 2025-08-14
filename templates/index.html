@@ -104,42 +104,44 @@
             <h3 class="mb-4 text-center" style="font-weight:700; color:#9966ff;">🦷 Tooth Cavity Prediction Dashboard</h3>
           </div>
           <!-- LEFT COLUMN: Three stacked cards -->
-          <div class="col-lg-6 d-flex flex-column" style="height: 480px;">
-            <!-- Upload -->
-            <div class="card p-3 mb-3 flex-grow-1 position-relative">
-              <h6>📤 Upload Image</h6>
-              <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
-            </div>
-            <!-- Tools -->
-            <div class="card p-4 mb-3 flex-grow-1 d-flex flex-column justify-content-between">
-              <h5>📸 Model Tools</h5>
-              <div class="d-flex flex-wrap gap-2">
-                <div class="clickable-section" onclick="showSection('prediction')">🔍 Prediction</div>
+          <div class="col-lg-6 d-flex flex-column">
+            <div class="d-flex flex-column" style="height: 480px;">
+              <!-- Upload -->
+              <div class="card p-3 position-relative" style="height:160px; margin-bottom:16px;">
+                <h6>📤 Upload Image</h6>
+                <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
               </div>
-            </div>
-            <!-- Prediction Result -->
-            <div class="card p-4 mb-3 flex-grow-1 d-flex flex-column justify-content-between prediction-section">
-              <div class="row flex-grow-1 align-items-center prediction-row">
-                <div class="col-12">
-                  <h4>📈 Prediction Result</h4>
-                  <p>Prediction Result: <span id="prediction-result">-</span></p>
+              <!-- Tools -->
+              <div class="card p-4 d-flex flex-column justify-content-between" style="height:160px; margin-bottom:16px;">
+                <h5>📸 Model Tools</h5>
+                <div class="d-flex flex-wrap gap-2">
+                  <div class="clickable-section" onclick="showSection('prediction')">🔍 Prediction</div>
                 </div>
               </div>
-              <div class="row flex-grow-1 align-items-center prediction-row">
-                <div class="col-12">
-                  <p>⏱️ Inference Time: <span id="inference-time">-- ms</span></p>
+              <!-- Prediction Result -->
+              <div class="card p-4 d-flex flex-column justify-content-between prediction-section" style="height:160px; margin-bottom:16px;">
+                <div class="row flex-grow-1 align-items-center prediction-row">
+                  <div class="col-12">
+                    <h4>📈 Prediction Result</h4>
+                    <p>Prediction Result: <span id="prediction-result">-</span></p>
+                  </div>
                 </div>
-              </div>
-              <div class="row flex-grow-1 align-items-center prediction-row">
-                <div class="col-12">
-                  <p>Additional Info: <span id="additional-info">-</span></p>
+                <div class="row flex-grow-1 align-items-center prediction-row">
+                  <div class="col-12">
+                    <p>⏱️ Inference Time: <span id="inference-time">-- ms</span></p>
+                  </div>
+                </div>
+                <div class="row flex-grow-1 align-items-center prediction-row">
+                  <div class="col-12">
+                    <p>Additional Info: <span id="additional-info">-</span></p>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- Probability Bar Chart -->
-            <div class="card p-4 mb-3 flex-grow-1">
+            <!-- Probability Bar Chart (separated, same height as right) -->
+            <div class="card p-4 flex-grow-0" style="height:480px;">
               <h5 class="mb-3">🦷 Prediction Probabilities</h5>
-              <canvas id="probabilityChart" height="180"></canvas>
+              <canvas id="probabilityChart" height="400"></canvas>
             </div>
           </div>
           <!-- RIGHT COLUMN: IMAGE DISPLAY -->
