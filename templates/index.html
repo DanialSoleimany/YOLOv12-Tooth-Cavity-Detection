@@ -35,9 +35,9 @@
         <div class="col-lg-6 d-flex flex-column" style="height: 480px;">
 
           <!-- Upload -->
-          <div class="card p-3 mb-3 flex-grow-1">
+          <div class="card p-3 mb-3 flex-grow-1 position-relative">
             <h6>📤 Upload Image</h6>
-            <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
+            <input type="file" id="image-input" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
           </div>
 
           <!-- Tools -->
@@ -72,11 +72,12 @@
         <!-- RIGHT COLUMN: IMAGE DISPLAY -->
         <div class="col-lg-6">
           <div class="card p-3 h-100 d-flex justify-content-center align-items-center" style="height: 480px;">
-            <div id="image-box" class="w-100 h-100" style="
+            <div id="image-box" class="w-100 h-100 position-relative" style="
                 border-radius: 12px;
                 background-color: #eee;
                 overflow: hidden;
                 display: none;">
+              <button type="button" class="btn btn-link position-absolute top-0 end-0 m-2" id="remove-image-btn" onclick="removeImage()" style="font-size: 1.5rem; color: #888; z-index: 2;">&times;</button>
               <img id="preview-img" src="#" alt="Uploaded Image" style="width: 100%; height: 100%; object-fit: cover;" />
             </div>
           </div>
@@ -104,6 +105,14 @@
         };
         reader.readAsDataURL(file);
       }
+    }
+
+    function removeImage() {
+      document.getElementById('image-input').value = '';
+      const img = document.getElementById('preview-img');
+      img.src = '#';
+      img.style.display = 'none';
+      document.getElementById('image-box').style.display = 'none';
     }
 
     function showSection(sectionId) {
