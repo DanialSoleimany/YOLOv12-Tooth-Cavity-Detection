@@ -86,6 +86,18 @@ body {
   padding: 4px 12px;
 }
 
+.about-btn {
+  background: #e75480 !important;
+  color: #fff !important;
+  border: none !important;
+  transition: background 0.3s;
+}
+
+.about-btn:hover, .about-btn:focus {
+  background: #9966ff !important;
+  color: #fff !important;
+}
+
 /* === فیلدها === */
 .form-control {
   background-color: rgba(255, 255, 255, 0.05);
