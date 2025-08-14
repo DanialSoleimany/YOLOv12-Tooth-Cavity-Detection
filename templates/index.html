@@ -122,6 +122,11 @@
                 </div>
               </div>
             </div>
+            <!-- Probability Bar Chart -->
+            <div class="card p-4 mb-3 flex-grow-1">
+              <h5 class="mb-3">🦷 Prediction Probabilities</h5>
+              <canvas id="probabilityChart" height="180"></canvas>
+            </div>
           </div>
           <!-- RIGHT COLUMN: IMAGE DISPLAY -->
           <div class="col-lg-6">
@@ -142,6 +147,7 @@
   </div>
 
   <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     function previewImage(event) {
       const file = event.target.files[0];
@@ -174,6 +180,36 @@
       const fileInput = document.querySelector('input[name="image"]');
       fileInput.value = '';
     }
+
+    // Example: update chart with dummy data (replace with real prediction data)
+    function updateProbabilityChart(labels, probabilities) {
+      const ctx = document.getElementById('probabilityChart').getContext('2d');
+      if (window.probChart) window.probChart.destroy();
+      window.probChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Probability',
+            data: probabilities,
+            backgroundColor: '#9966ff',
+            borderRadius: 8,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true, max: 1 }
+          }
+        }
+      });
+    }
+    // Example usage (replace with real data after prediction):
+    // updateProbabilityChart(['Tooth 1', 'Tooth 2', 'Tooth 3'], [0.85, 0.42, 0.67]);
   </script>
 </body>
 </html>
