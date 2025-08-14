@@ -1,29 +1,58 @@
 function previewImage(event) {
-  try {
-    const input = event.target;
-    const preview = document.getElementById('image-preview');
-    const file = input.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      }
-      reader.readAsDataURL(file);
-    }
-  } catch (error) {
-    alert("Error loading image: " + error.message);
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    document.getElementById('image-placeholder').style.display = 'none';
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById('preview-img');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      document.getElementById('image-box').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
   }
 }
 
 function showSection(sectionId) {
-  try {
-    ['prediction', 'gradcam', 'search'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('d-none');
-    });
-    document.getElementById(sectionId).classList.remove('d-none');
-  } catch (error) {
-    alert("Error switching section: " + error.message);
-  }
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('btn-' + sectionId).classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
 }
+
+function removeImage() {
+  document.getElementById('preview-img').src = '#';
+  document.getElementById('image-box').style.display = 'none';
+  document.getElementById('image-placeholder').style.display = 'block';
+  const fileInput = document.querySelector('input[name="image"]');
+  fileInput.value = '';
+}
+
+function updateProbabilityChart(labels, probabilities) {
+  const ctx = document.getElementById('probabilityChart').getContext('2d');
+  if (window.probChart) window.probChart.destroy();
+  window.probChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Probability',
+        data: probabilities,
+        backgroundColor: '#9966ff',
+        borderRadius: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, max: 1 }
+      }
+    }
+  });
+}
+// Example usage (replace with real data after prediction):
+// updateProbabilityChart(['Tooth 1', 'Tooth 2', 'Tooth 3'], [0.85, 0.42, 0.67]);
