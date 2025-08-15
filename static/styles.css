@@ -7,45 +7,21 @@ body {
   display: flex;
 }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 250px;
-  padding: 20px;
-  background: linear-gradient(145deg, #23234a 60%, #9966ff 100%);
-  color: #fff;
-  border-right: 1px solid rgba(255,255,255,0.08);
-  z-index: 100;
-}
-
-.sidebar h5 {
-  margin-bottom: 1.5rem;
-  font-weight: 500;
-  color: #fff;
-}
-
-.sidebar a {
+/* === Section visibility === */
+.section {
   display: block;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 999px;
-  transition: background 0.3s, color 0.3s;
-  font-weight: 500;
 }
 
-.sidebar a.active, .sidebar a:hover {
-  background: rgba(153,102,255,0.25);
-  color: #fff;
+.section.active {
+  display: block;
 }
+
+/* Sidebar removed - not needed for this layout */
 
 /* === محتوای اصلی === */
 .main-content {
-  margin-left: 270px;
   padding: 20px;
+  width: 100%;
 }
 
 /* === کارت‌ها === */
