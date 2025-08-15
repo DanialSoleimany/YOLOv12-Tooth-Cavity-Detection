@@ -25,33 +25,33 @@
         <h2 class="mb-4 text-center" style="font-weight:700; color:#9966ff;">Prediction Dashboard (RGB Images)</h2>
       </div>
 
-      <!-- Prediction Section -->
-      <div id="prediction" class="col-12">
-        <div class="row g-4 align-items-stretch">
-          <!-- LEFT COLUMN -->
-          <div class="col-lg-6 d-flex flex-column">
-            <div class="d-flex flex-column" style="height: 480px;">
-
-                             <!-- Upload Card -->
-               <div class="card p-3 position-relative" style="height:160px; margin-bottom:16px;">
+             <!-- Prediction Section -->
+       <div id="prediction" class="col-12">
+         <div class="row g-4 align-items-stretch">
+           <!-- LEFT COLUMN: Controls -->
+           <div class="col-lg-6 d-flex flex-column">
+             <!-- Controls Section (Upload, Status, Prediction) -->
+             <div class="d-flex flex-column" style="height: 480px;">
+               <!-- Upload Card -->
+               <div class="card p-3 position-relative" style="height: 160px; margin-bottom: 16px;">
                  <h6>📤 Upload Image</h6>
                  <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
                  <label for="confidence" class="mt-2">Confidence Threshold: <span id="conf-value">0.25</span></label>
                  <input type="range" id="confidence" min="0" max="1" step="0.01" value="0.25" class="form-range" oninput="document.getElementById('conf-value').textContent=this.value">
                </div>
 
-              <!-- Tools -->
-              <div class="card p-4 d-flex flex-column justify-content-between" style="height:160px; margin-bottom:16px;">
-                <h5>📸 Model Status</h5>
-                <div class="d-flex flex-wrap gap-2">
-                  <div style="padding: 8px 16px; background-color: rgba(0, 255, 0, 0.2); border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 20px; font-size: 14px;">
-                    ✅ Model Ready
-                  </div>
-                </div>
-              </div>
+               <!-- Model Status -->
+               <div class="card p-4 d-flex flex-column justify-content-between" style="height: 160px; margin-bottom: 16px;">
+                 <h5>📸 Model Status</h5>
+                 <div class="d-flex flex-wrap gap-2">
+                   <div style="padding: 8px 16px; background-color: rgba(0, 255, 0, 0.2); border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 20px; font-size: 14px;">
+                     ✅ Model Ready
+                   </div>
+                 </div>
+               </div>
 
-                             <!-- Prediction Result -->
-               <div class="card p-4 d-flex flex-column justify-content-between prediction-section" style="height:160px; margin-bottom:16px; position: relative;">
+               <!-- Prediction Result -->
+               <div class="card p-4 d-flex flex-column justify-content-between prediction-section" style="height: 160px; position: relative;">
                  <div class="row flex-grow-1 align-items-center prediction-row">
                    <div class="col-12">
                      <h4>📈 Prediction</h4>
@@ -65,35 +65,13 @@
                  </div>
                  <button type="button" class="btn btn-custom position-absolute bottom-0 end-0 m-3" onclick="sendPrediction()" style="font-size: 0.8rem; padding: 6px 12px;">Predict</button>
                </div>
-            </div>
+             </div>
+           </div>
 
-            <!-- Probability Bar Chart -->
-            <div class="card p-4 flex-grow-0" style="height:480px;">
-              <h5 class="mb-3">🦷 Prediction Probabilities</h5>
-              
-              <!-- Color Legend -->
-              <div class="row mb-3">
-                <div class="col-6">
-                  <div class="d-flex align-items-center">
-                    <div style="width: 20px; height: 20px; background-color: #ff0000; border: 1px solid #000; margin-right: 8px;"></div>
-                    <span style="font-weight: 500;">Cavity (Red)</span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="d-flex align-items-center">
-                    <div style="width: 20px; height: 20px; background-color: #00ff00; border: 1px solid #000; margin-right: 8px;"></div>
-                    <span style="font-weight: 500;">Normal (Green)</span>
-                  </div>
-                </div>
-              </div>
-              
-              <canvas id="probabilityChart" height="350"></canvas>
-            </div>
-          </div>
-
-                     <!-- RIGHT COLUMN: Image Display -->
+           <!-- RIGHT COLUMN: Image Display -->
            <div class="col-lg-6">
-             <div class="card p-3 h-100 d-flex justify-content-center align-items-center position-relative" style="height: 480px;">
+             <!-- Image Display -->
+             <div class="card p-3 d-flex justify-content-center align-items-center position-relative" style="height: 480px;">
                <span id="image-placeholder" style="color:#aaa; font-size:1.1rem; position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); text-align:center;">Upload image here</span>
                <div id="image-box" class="w-100 h-100 position-relative" style="border-radius: 12px; background-color: #eee; overflow: hidden; display: none;">
                  <button type="button" class="btn btn-link position-absolute top-0 end-0 m-2" id="remove-image-btn" onclick="removeImage()" style="font-size: 1.5rem; color: #888; z-index: 2;">&times;</button>
@@ -101,8 +79,35 @@
                </div>
              </div>
            </div>
-        </div>
-      </div>
+         </div>
+
+         <!-- FULL WIDTH: Probability Bar Chart -->
+         <div class="row mt-4">
+           <div class="col-12">
+             <div class="card p-4" style="height: 480px;">
+               <h5 class="mb-3">🦷 Prediction Probabilities</h5>
+               
+               <!-- Color Legend -->
+               <div class="row mb-3">
+                 <div class="col-6">
+                   <div class="d-flex align-items-center">
+                     <div style="width: 20px; height: 20px; background-color: #ff0000; border: 1px solid #000; margin-right: 8px;"></div>
+                     <span style="font-weight: 500;">Cavity (Red)</span>
+                   </div>
+                 </div>
+                 <div class="col-6">
+                   <div class="d-flex align-items-center">
+                     <div style="width: 20px; height: 20px; background-color: #00ff00; border: 1px solid #000; margin-right: 8px;"></div>
+                     <span style="font-weight: 500;">Normal (Green)</span>
+                   </div>
+                 </div>
+               </div>
+               
+               <canvas id="probabilityChart" height="350"></canvas>
+             </div>
+           </div>
+         </div>
+       </div>
 
       <!-- About Me Section -->
       <div id="about-me" class="col-12">
