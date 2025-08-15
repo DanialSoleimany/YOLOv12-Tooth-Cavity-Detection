@@ -54,28 +54,51 @@ function updateProbabilityChart(detections) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y', // Make it horizontal
       plugins: {
         title: { 
           display: true, 
           text: 'Prediction Probabilities (Red=Cavity, Green=Normal)',
-          font: { size: 14, weight: 'bold' }
+          font: { size: 14, weight: 'bold', color: '#fff' }
         },
         legend: { 
           position: 'top',
           labels: {
             usePointStyle: true,
-            padding: 20
+            padding: 20,
+            color: '#fff'
           }
         }
       },
       scales: {
-        y: { 
+        x: { 
           beginAtZero: true, 
           max: 1,
-          title: { display: true, text: 'Confidence Score' }
+          title: { 
+            display: true, 
+            text: 'Confidence Score',
+            color: '#fff'
+          },
+          ticks: {
+            color: '#fff'
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          }
         },
-        x: { 
-          title: { display: true, text: 'Detected Objects' }
+        y: { 
+          title: { 
+            display: true, 
+            text: 'Detected Objects',
+            color: '#fff'
+          },
+          ticks: {
+            color: '#fff'
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          }
         }
       }
     }

@@ -32,14 +32,13 @@
           <div class="col-lg-6 d-flex flex-column">
             <div class="d-flex flex-column" style="height: 480px;">
 
-              <!-- Upload Card -->
-              <div class="card p-3 position-relative" style="height:160px; margin-bottom:16px;">
-                <h6>📤 Upload Image</h6>
-                <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
-                <label for="confidence" class="mt-2">Confidence Threshold: <span id="conf-value">0.25</span></label>
-                <input type="range" id="confidence" min="0" max="1" step="0.01" value="0.25" class="form-range" oninput="document.getElementById('conf-value').textContent=this.value">
-                <button type="button" class="btn btn-custom mt-2" onclick="sendPrediction()">Predict</button>
-              </div>
+                             <!-- Upload Card -->
+               <div class="card p-3 position-relative" style="height:160px; margin-bottom:16px;">
+                 <h6>📤 Upload Image</h6>
+                 <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)" required>
+                 <label for="confidence" class="mt-2">Confidence Threshold: <span id="conf-value">0.25</span></label>
+                 <input type="range" id="confidence" min="0" max="1" step="0.01" value="0.25" class="form-range" oninput="document.getElementById('conf-value').textContent=this.value">
+               </div>
 
               <!-- Tools -->
               <div class="card p-4 d-flex flex-column justify-content-between" style="height:160px; margin-bottom:16px;">
@@ -51,20 +50,21 @@
                 </div>
               </div>
 
-              <!-- Prediction Result -->
-              <div class="card p-4 d-flex flex-column justify-content-between prediction-section" style="height:160px; margin-bottom:16px;">
-                <div class="row flex-grow-1 align-items-center prediction-row">
-                  <div class="col-12">
-                    <h4>📈 Prediction</h4>
-                    <p>Prediction Result: <span id="prediction-result">-</span></p>
-                  </div>
-                </div>
-                <div class="row flex-grow-1 align-items-center prediction-row">
-                  <div class="col-12">
-                    <p>⏱️ Inference Time: <span id="inference-time">-- ms</span></p>
-                  </div>
-                </div>
-              </div>
+                             <!-- Prediction Result -->
+               <div class="card p-4 d-flex flex-column justify-content-between prediction-section" style="height:160px; margin-bottom:16px; position: relative;">
+                 <div class="row flex-grow-1 align-items-center prediction-row">
+                   <div class="col-12">
+                     <h4>📈 Prediction</h4>
+                     <p>Prediction Result: <span id="prediction-result">-</span></p>
+                   </div>
+                 </div>
+                 <div class="row flex-grow-1 align-items-center prediction-row">
+                   <div class="col-12">
+                     <p>⏱️ Inference Time: <span id="inference-time">-- ms</span></p>
+                   </div>
+                 </div>
+                 <button type="button" class="btn btn-custom position-absolute bottom-0 end-0 m-3" onclick="sendPrediction()" style="font-size: 0.8rem; padding: 6px 12px;">Predict</button>
+               </div>
             </div>
 
             <!-- Probability Bar Chart -->
@@ -91,16 +91,16 @@
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Image Display -->
-          <div class="col-lg-6">
-            <div class="card p-3 h-100 d-flex justify-content-center align-items-center position-relative" style="height: 480px;">
-              <span id="image-placeholder" style="color:#aaa; font-size:1.1rem; position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); text-align:center;">Upload image here</span>
-              <div id="image-box" class="w-100 h-100 position-relative" style="border-radius: 12px; background-color: #eee; overflow: hidden; display: none;">
-                <button type="button" class="btn btn-link position-absolute top-0 end-0 m-2" id="remove-image-btn" onclick="removeImage()" style="font-size: 1.5rem; color: #888; z-index: 2;">&times;</button>
-                <img id="preview-img" src="#" alt="Uploaded Image" style="width: 100%; height: 100%; object-fit: cover;" />
-              </div>
-            </div>
-          </div>
+                     <!-- RIGHT COLUMN: Image Display -->
+           <div class="col-lg-6">
+             <div class="card p-3 h-100 d-flex justify-content-center align-items-center position-relative" style="height: 480px;">
+               <span id="image-placeholder" style="color:#aaa; font-size:1.1rem; position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); text-align:center;">Upload image here</span>
+               <div id="image-box" class="w-100 h-100 position-relative" style="border-radius: 12px; background-color: #eee; overflow: hidden; display: none;">
+                 <button type="button" class="btn btn-link position-absolute top-0 end-0 m-2" id="remove-image-btn" onclick="removeImage()" style="font-size: 1.5rem; color: #888; z-index: 2;">&times;</button>
+                 <img id="preview-img" src="#" alt="Uploaded Image" style="width: 100%; height: 100%; object-fit: contain;" />
+               </div>
+             </div>
+           </div>
         </div>
       </div>
 
