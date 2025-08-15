@@ -154,10 +154,9 @@ function sendPrediction() {
       updateProbabilityChart([]);
     }
 
-    if (data.saved_image_path) {
-      const annotatedImageUrl = `/download/image/${data.saved_image_path}`;
+    if (data.annotated_image) {
       const imgElement = document.getElementById("preview-img");
-      imgElement.src = annotatedImageUrl + `?t=${new Date().getTime()}`;
+      imgElement.src = `data:image/jpeg;base64,${data.annotated_image}`;
       imgElement.style.display = "block";
       document.getElementById("image-placeholder").style.display = "none";
       document.getElementById("image-box").style.display = "block";

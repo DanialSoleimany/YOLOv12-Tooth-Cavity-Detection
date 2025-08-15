@@ -1,0 +1,92 @@
+/* === General Styles === */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.main-content {
+  padding: 20px;
+  width: 100%; /* Ensure it takes full width */
+  margin-left: 0; /* Remove any left margin from sidebar */
+}
+
+.card {
+  background-color: #3a3a3a;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #f0f0f0;
+}
+
+.btn-custom {
+  background-color: #9966ff;
+  border-color: #9966ff;
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #7a4dff;
+  border-color: #7a4dff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.form-control,
+.form-range {
+  background-color: #4a4a4a;
+  border: 1px solid #5a5a5a;
+  color: #f0f0f0;
+}
+
+.form-control:focus,
+.form-range:focus {
+  background-color: #4a4a4a;
+  border-color: #9966ff;
+  box-shadow: 0 0 0 0.25rem rgba(153, 102, 255, 0.25);
+  color: #f0f0f0;
+}
+
+/* === Image Upload/Display === */
+#image-box {
+  display: none; /* Hidden by default */
+  border: 2px dashed #5a5a5a;
+  background-color: #4a4a4a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+#preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* === Chart container === */
+#probabilityChart {
+  min-height: 350px;
+  max-height: 350px;
+}
+
+/* === About Me Section === */
+.about-btn {
+  background-color: #5a5a5a;
+  border-color: #5a5a5a;
+  color: #f0f0f0;
+}
+
+.about-btn:hover {
+  background-color: #6a6a6a;
+  border-color: #6a6a6a;
+}

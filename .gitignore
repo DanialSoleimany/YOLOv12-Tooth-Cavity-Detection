@@ -1,7 +1,6 @@
 # Python interpreter
 C:\Users\ASUS\anaconda3\python.exe
 C:\Users\ASUS\anaconda3\Scripts\python.exe
-
 # Python cache files
 __pycache__/
 *.py[cod]
@@ -80,3 +79,4 @@ Thumbs.db
 temp_uploads/
 results/
 *.log
+

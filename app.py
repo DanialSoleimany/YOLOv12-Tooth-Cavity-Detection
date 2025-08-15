@@ -1,27 +1,22 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify
 from ultralytics import YOLO
 import cv2
 import os
 import time
+import numpy as np
+import base64
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            template_folder='ui/templates',
+            static_folder='ui/static')
 
 # === CONFIGURATION ===
 MODEL_PATH = 'models/best.pt'  # Path to your YOLO model
 CONFIDENCE_THRESHOLD = 0.25
-UPLOAD_FOLDER = 'temp_uploads'
-RESULTS_FOLDER = 'results'
-ANNOTATIONS_FOLDER = 'annotations'
-
-# Ensure folders exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(RESULTS_FOLDER, exist_ok=True)
-os.makedirs(ANNOTATIONS_FOLDER, exist_ok=True)
 
 # === CLASSES (modify for your dataset) ===
 CLASS_NAMES = ['cavity', 'normal']  # index 0 = cavity, index 1 = normal
-
 
 # === Load YOLO model ===
 try:
@@ -32,14 +27,20 @@ except Exception as e:
     model = None
 
 
-def predict_with_yolo(image_path, conf_threshold=0.25):
+def predict_with_yolo(image_data_or_path, conf_threshold=0.25):
     """
     Run YOLO prediction and return annotated image + detection data
     """
     if model is None:
         raise Exception("Model not loaded")
 
-    img_bgr = cv2.imread(str(image_path))
+    # If image_data_or_path is a path (e.g., temporary file for YOLO)
+    if isinstance(image_data_or_path, str) and os.path.exists(image_data_or_path):
+        img_bgr = cv2.imread(image_data_or_path)
+    else: # Assume it's in-memory data if not a valid path
+        nparr = np.frombuffer(image_data_or_path, np.uint8)
+        img_bgr = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
     if img_bgr is None:
         raise Exception("Could not load image")
 
@@ -47,7 +48,12 @@ def predict_with_yolo(image_path, conf_threshold=0.25):
 
     # YOLO prediction
     start_time = time.time()
-    results = model.predict(source=str(image_path), conf=conf_threshold, verbose=False)
+    # Pass image directly to model.predict if it supports in-memory, otherwise save temporarily
+    # For Ultralytics YOLO, it's often easiest to pass a path for prediction
+    temp_predict_path = "temp_for_yolo.jpg" # Temporary file for YOLO processing
+    cv2.imwrite(temp_predict_path, img_bgr)
+    results = model.predict(source=temp_predict_path, conf=conf_threshold, verbose=False)
+    os.remove(temp_predict_path) # Clean up immediately
     inference_time = (time.time() - start_time) * 1000
 
     annotated_img = img_bgr.copy()
@@ -90,32 +96,13 @@ def predict_with_yolo(image_path, conf_threshold=0.25):
 
 
 def save_predictions_to_file(detections, original_image_size, filename):
-    """Save predictions in YOLO text format"""
-    width, height = original_image_size
-    annotation_file = os.path.join(ANNOTATIONS_FOLDER, f"{filename}.txt")
-
-    with open(annotation_file, 'w') as f:
-        for detection in detections:
-            cls_id = detection['class_id']
-            x1, y1, x2, y2 = detection['bbox']
-
-            center_x = ((x1 + x2) / 2) / width
-            center_y = ((y1 + y2) / 2) / height
-            bbox_width = (x2 - x1) / width
-            bbox_height = (y2 - y1) / height
-
-            f.write(f"{cls_id} {center_x:.6f} {center_y:.6f} {bbox_width:.6f} {bbox_height:.6f} {detection['confidence']:.6f}\n")
-
-    return annotation_file
+    """Annotation saving is disabled as requested"""
+    return None
 
 
 def save_annotated_image(img_bgr, filename):
-    """Save annotated image to results folder"""
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    result_filename = f"{filename}_{timestamp}_predicted.jpg"
-    result_path = os.path.join(RESULTS_FOLDER, result_filename)
-    cv2.imwrite(result_path, img_bgr)
-    return result_path
+    """Image saving is disabled as requested"""
+    return None
 
 
 @app.route('/', methods=['GET'])
@@ -138,47 +125,33 @@ def api_predict():
     try:
         print(f"Processing image: {image_file.filename}")
         original_filename = os.path.splitext(image_file.filename)[0]
-        temp_path = os.path.join(UPLOAD_FOLDER, image_file.filename)
-        image_file.save(temp_path)
-        print(f"Image saved to: {temp_path}")
+        
+        # Read image data directly into memory
+        image_data = image_file.read()
 
         conf_threshold = float(request.form.get('confidence', CONFIDENCE_THRESHOLD))
         print(f"Confidence threshold: {conf_threshold}")
 
-        annotated_img, detections, inference_time, original_size = predict_with_yolo(temp_path, conf_threshold)
+        # Pass in-memory image data to prediction function
+        annotated_img, detections, inference_time, original_size = predict_with_yolo(image_data, conf_threshold)
         print(f"Prediction completed: {len(detections)} detections")
-        saved_image_path = save_annotated_image(annotated_img, original_filename)
-        annotation_file_path = save_predictions_to_file(detections, original_size, original_filename)
-
-        os.remove(temp_path)
+        
+        # Convert annotated image to base64 for frontend display
+        _, buffer = cv2.imencode('.jpg', annotated_img)
+        img_base64 = base64.b64encode(buffer).decode('utf-8')
 
         return jsonify({
             'detections': detections,
             'inference_time_ms': round(inference_time, 2),
             'num_detections': len(detections),
             'confidence_threshold': conf_threshold,
-            'saved_image_path': os.path.basename(saved_image_path),
-            'annotation_file_path': os.path.basename(annotation_file_path)
+            'annotated_image': img_base64  # Send Base64 image
         })
 
     except Exception as e:
+        import traceback
+        traceback.print_exc() # Print full traceback for debugging
         return jsonify({'error': str(e)}), 500
-
-
-@app.route('/download/image/<filename>')
-def download_image(filename):
-    file_path = os.path.join(RESULTS_FOLDER, filename)
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=False)
-    return jsonify({'error': 'File not found'}), 404
-
-
-@app.route('/download/annotation/<filename>')
-def download_annotation(filename):
-    file_path = os.path.join(ANNOTATIONS_FOLDER, filename)
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True, mimetype='text/plain')
-    return jsonify({'error': 'File not found'}), 404
 
 
 @app.route('/api/classes', methods=['GET'])
