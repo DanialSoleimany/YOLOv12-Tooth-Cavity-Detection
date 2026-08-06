@@ -53,7 +53,7 @@ Follow these steps to set up and run the project locally:
 
 2.  **Create a Virtual Environment** (Recommended):
     ```bash
-    python -m venv venv
+    python -m venv .venv
     ```
 
 3.  **Activate the Virtual Environment**:
