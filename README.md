@@ -47,7 +47,7 @@ Follow these steps to set up and run the project locally:
 
 1.  **Clone the Repository**:
     ```bash
-    git clone https://github.com/your-username/YOLOv12-Tooth-Cavity-Detection.git
+    git clone https://github.com/DanialSoleimany/YOLOv12-Tooth-Cavity-Detection.git
     cd YOLOv12-Tooth-Cavity-Detection
     ```
 
