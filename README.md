@@ -59,11 +59,11 @@ Follow these steps to set up and run the project locally:
 3.  **Activate the Virtual Environment**:
     *   **Windows**:
         ```bash
-        .\venv\Scripts\activate
+        .\.venv\Scripts\activate
         ```
     *   **macOS/Linux**:
         ```bash
-        source venv/bin/activate
+        source .venv/bin/activate
         ```
 
 4.  **Install Dependencies**:
